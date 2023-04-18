@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Tristan Goodbody" />
+
+<meta name="date" content="2021-01-03" />
+
+<title>Introduction</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">IRSS LAStools Tutorial</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="01-intro.html">Installing</a>
+</li>
+<li>
+  <a href="02-scripting.html">Scripting</a>
+</li>
+<li>
+  <a href="03-examplescript.html">Example Script</a>
+</li>
+<li>
+  <a href="04-gettingstarted.html">Getting Started</a>
+</li>
+<li>
+  <a href="05-looping.html">Looping</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Introduction</h1>
+<h4 class="author">Tristan Goodbody</h4>
+<h4 class="date">01/03/2021</h4>
+
+</div>
+
+
+<div id="installing-lastools" class="section level2">
+<h2>Installing LAStools</h2>
+<p>I’m going to quickly show you how to install LAStools and get your workstation ready to start processing data. There are 4 steps you need to follow:</p>
+<ol style="list-style-type: decimal">
+<li>Install LAStools</li>
+<li>Update environment variables</li>
+<li>Update LAStools licence</li>
+<li>Install code editor</li>
+</ol>
+<div id="installing-lastools-1" class="section level3">
+<h3>Installing LAStools</h3>
+<p>This step is easy. Navigate to the <a href="https://rapidlasso.com/lastools/">LAStools website</a> and install the newest version to your <code>C:\</code> drive. Once downloaded and installed, open the <code>C:\lastools\bin</code> folder and copy the path. You will need it for the next step of the tutorial.</p>
+</div>
+<div id="environment-variables" class="section level3">
+<h3>Environment variables</h3>
+<p>The <code>bin</code> folder in lastools has a number of <code>.exe</code> files that are the programs LAStools uses to process data. It is important that our computer knows where these programs are on our hard-drive so that we can write simple code without having to specify the file path everytime. See the example code below that shows what a line of code looks like with and without specifying environment variables for converting a <code>.las</code> file to <code>.laz</code>.</p>
+<pre><code>## If we dont setup the environment variables
+## Need to specify path everytime
+
+C:\lastools\bin\las2las.exe -i example.las -o example.laz
+
+## If we do setup the environment variables
+## No need to specify path
+
+las2las -i example.las -o example.laz
+</code></pre>
+<p><strong><em>You only need to do this 1 time</em></strong></p>
+<p>Having copied the <code>bin</code> file path, press you windows key or click the windows icon in the bottom left of your computer screen and type <code>environment variables</code>. Click the suggested <code>edit your systems envrionment variables</code>. A system properties window will then open. Click the option on the bottom right of the window that says <code>Environment Variables...</code>. A new window will open with 2 sections (top &amp; bottom). Ignore the top section. In the bottom section (<code>System variables</code>), scroll until you see the <code>Path</code> variable, which has a list of file paths in the <code>Value</code> column. Double click on the list of file paths and the <code>Edit environmental variable</code> window will appear. Click the <code>New</code> button and paste the lastools <code>bin</code> folder path from the previous section and click <code>OK</code>.</p>
+</div>
+<div id="update-lastools-license" class="section level3">
+<h3>Update LAStools license</h3>
+<p>LAStools is not a free software! Some programs <em>within</em> lastools are open source (e.g. <code>las2las  laszip</code> etc.), while others can be used to an extent without a license (small datasets, limited number of points/spatial coverage/<strong><em>single core processing</em></strong>). In order to make use of the full utility of lastools, Nicholas has purchased a license, which opens up the full functionality of the software.</p>
+<p>By default, this license is not installed. In order to install the license:</p>
+<ol style="list-style-type: decimal">
+<li>Navigate to <code>\\FRST-IRSStor\Root\ByProject\1_LiDAR software\lastools</code>.</li>
+<li>Copy the text file called <code>lastoolslicense.txt</code>.</li>
+<li>Navigate to <code>C:\lastools\bin</code></li>
+<li>Paste the <code>lastoolslicense.txt</code> file.</li>
+</ol>
+<p>We now need to activate the license. In doing this you are about to start using lastools for the first time! Wow, what a whirlwind its been! You have come so far and I am proud of your accomplishments!</p>
+<p>To activate the license open up a command prompt window by pressing the windows key and typing cmd. Once the command prompt is open paste in the following code</p>
+<pre><code>lascopy -license</code></pre>
+<p>If it worked, you will see something like the code below. If you don’t see this, there is likely an issue with your system variables. If this happens please feel free to email Piotr and he will help you.</p>
+<pre><code>LAStools (by martin@rapidlasso.com) version 201207 (academic)
+holder:      Campus_Wide_University_of_British_Columbia_Vancouver
+start date:  210108
+duration:    365 days
+maintenance: yes
+remaining:   365 days
+# of seats:  office-wide (this location)
+type:        academic
+licensed tools:
+  lasgrid
+  lasground + lasground_new
+  lasheight
+  lasclassify
+  lasboundary
+  lasclip
+  lasthin
+  las2dem
+  las2tin
+  las2iso
+  lastool + lasview
+  lassort
+  lasduplicate
+  lascontrol
+  lascolor
+  blast2dem + blast2iso
+  lastile
+  lasplanes
+  shp2las + las2shp
+  lassplit
+  lasoverlap
+  lascanopy
+  lasnoise
+  lascopy
+  lastrack
+  lasoverage
+  lasreturn
+  lasvoxel
+  lasdistance
+
+</code></pre>
+</div>
+</div>
+<div id="install-code-editor" class="section level2">
+<h2>Install code editor</h2>
+<p>To use LAStools, I suggest learning to script using the LAStools commandline functionality. A LAStools GUI does exist… though I have never used it and am usually quite scared when I see it open. The command line is simple and very well documented. New coders shouldn’t be discouraged!</p>
+<p>To start, its important to have a code editor that you like using. I typically use <a href="https://notepad-plus-plus.org/downloads/">Notepad++</a>, though any code editor should work.</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

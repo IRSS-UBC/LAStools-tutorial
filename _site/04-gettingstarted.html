@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Tristan Goodbody" />
+
+<meta name="date" content="2021-01-03" />
+
+<title>Getting Started</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">IRSS LAStools Tutorial</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="01-intro.html">Installing</a>
+</li>
+<li>
+  <a href="02-scripting.html">Scripting</a>
+</li>
+<li>
+  <a href="03-examplescript.html">Example Script</a>
+</li>
+<li>
+  <a href="04-gettingstarted.html">Getting Started</a>
+</li>
+<li>
+  <a href="05-looping.html">Looping</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Getting Started</h1>
+<h4 class="author">Tristan Goodbody</h4>
+<h4 class="date">01/03/2021</h4>
+
+</div>
+
+
+<div id="scripting-using-text-editor" class="section level2">
+<h2>Scripting using text editor</h2>
+<p>Like I mentioned in the first section, you can use a code editor to process a series of lastools commands to make a processing workflow. I have prepared a simple, standardized lidar workflow that I use often and modify to fit my project needs. Ive pasted that script in the <em>Example Script</em> section.</p>
+<div id="starting-your-own-script" class="section level3">
+<h3>Starting your own script</h3>
+<p>Lastools command line code is executed using <code>.bat</code> files. These files are executable files that are run by double clicking on them. To make your own <code>.bat</code> file simply open a new document on notepad++ and save it as <code>example.bat</code>. You will notice that the saved version of the file has an icon with 2 gears on it.</p>
+<p><code>.bat</code> files are scripted using the microsoft DOS programming language, though we need only a <strong><em>very</em></strong> basic understanding of some commands to make things work.</p>
+<p>If you copied and pasted code into the file you will also notice that it automatically colour codes the contents.</p>
+</div>
+<div id="setting-global-variables-and-folder-hierarchy" class="section level3">
+<h3>Setting global variables and folder hierarchy</h3>
+<p>The first step in processing your data should be specifying where the initial input data are located, and where you want your output directory to be located. See the following piece of the example script.</p>
+<pre><code>:: Set global environments
+set f_in=D:\lasin
+set f_out=D:\lasout
+
+set cores=4</code></pre>
+<p>In this script we use the <code>set</code> function, which assigns values to a variable. In this case we are assigning the path <code>D:\lasin</code> to the variable <code>f_in</code>. Consider this to the same as <code>f_in &lt;- "D:\lasin"</code> in R. We do the same with <code>f_out</code>. We also set <code>cores = 4</code>, which we will use for multi core processing using the <code>-cores</code> switch.</p>
+<p>In the DOS language whenever we want to call a variable that has been defined using <code>set</code> we need to use the <code>%&lt;VARIABLE&gt;%</code> format. This save us from having to write the file path everytime (which we will do often). You’ll also notice that the <code>::</code> denotes a code comment.</p>
+</div>
+<div id="ouput-folder-hierarchy" class="section level3">
+<h3>Ouput folder hierarchy</h3>
+<p>Now that we have defined our root output folder <code>%f_out%</code>. We should think about what we actually want to do with our lidar files - i.e. how are we going to process them; what outputs will we make. This is important to think about because we want to produce a organized directory of processed data.</p>
+<p>In the example script we do the following:</p>
+<ol style="list-style-type: decimal">
+<li>Determine information about each file - <code>lasinfo</code></li>
+<li>Tile data - <code>lastile</code></li>
+<li>Optimize lidar data - <code>lasoptimize</code></li>
+<li>Compute boundary of lidar files - <code>lasboundary</code> - CAN BE <strong>VERY</strong> SLOW</li>
+<li>Filter data for noise - <code>lasnoise</code></li>
+<li>Classify data - <code>lasground</code></li>
+<li>Normalize data - <code>lasheight</code></li>
+<li>Make DTM and DSM - <code>blast2dem</code> &amp; <code>lasgrid</code></li>
+<li>Make CHM - <code>lasgrid</code></li>
+<li>Make image of raster density - <code>lasgrid</code></li>
+</ol>
+<p>See the following piece of code:</p>
+<pre><code>:: processing stream
+:: if a folder doesnt already exist -&gt; make that folder
+IF NOT EXIST %f_out% MKDIR %f_out%
+IF NOT EXIST %f_out%\~_reports MKDIR %f_out%\~_reports
+IF NOT EXIST %f_out%\01_tile MKDIR %f_out%\01_tile
+IF NOT EXIST %f_out%\02_optimized MKDIR %f_out%\02_optimized
+IF NOT EXIST %f_out%\03_class MKDIR %f_out%\03_class
+IF NOT EXIST %f_out%\04_norm MKDIR %f_out%\04_norm
+IF NOT EXIST %f_out%\05_raster\dtm MKDIR %f_out%\05_raster\dtm
+IF NOT EXIST %f_out%\05_raster\dsm MKDIR %f_out%\05_raster\dsm
+IF NOT EXIST %f_out%\05_raster\chm MKDIR %f_out%\05_raster\chm
+IF NOT EXIST %f_out%\05_raster\den MKDIR %f_out%\05_raster\den
+</code></pre>
+<p><code>IF NOT EXIST</code> specifies that if the folder following is not already created, make it <code>MKDIR</code> makes the specified folder</p>
+<p>This means that if the folder defined by <code>%f_out</code> doesnt exist, that <code>IF NOT EXIST %f_out% MKDIR %f_out%</code> will make our root output directory.</p>
+<p>This also works for sub-directories. When I process data I want each stage of processing outputs to be located in their own appropriately named folder within the root directory. This means that if I am tiling the data I will want it in a folder that contains <code>tile</code>, and normalizing <code>norm</code> etc.</p>
+</div>
+<div id="running-the-script-for-the-first-time" class="section level3">
+<h3>Running the script for the first time</h3>
+<p>Now that we understand the folder hierarchy that will be created we can start to process some data. Before we do that however, paste the the word <code>pause</code> into the example script after the <code>IF NOT EXIST</code> parameters.</p>
+<p>The <code>pause</code> function tells the program to… pause processing. This makes it easy for us to stop processing in particular locations to see if outputs are correct. You can resume processing by pressing enter in the command prompt window. The code will run until the next <code>pause</code> command, or until the script is finished or it finds an error.</p>
+<p>After entering the pause command, save your example script and double click on the batchfile. The command prompt will open, you will see the processed code in the window, and you will see <code>pause...</code> at the bottom with a blinking indicator.</p>
+<p>If this is what you see (great), (if not, not great - go back) navigate to the output folder location you specified with <code>%f_out%</code> and see whether the folders you speficied have been created (they should all be there!).</p>
+</div>
+<div id="lasinfo" class="section level3">
+<h3>1. <code>lasinfo</code></h3>
+<p>Now that your output folders are created you are ready to start processing your data using the lastools commands. The first command we see is <code>lasinfo</code>. Like we said earlier, we see a number of switches denoted with <code>-</code>, but we also see <code>^</code>, which is a piping operator similar to <code>%&gt;%</code> from the tidyverse in R. You need to use <code>^</code> if you want to script your code on multiple lines.</p>
+<pre><code>::Info about data
+lasinfo -i %f_in%\*.las ^
+    -cd ^
+    -stdout ^
+    -odir %f_out%\~_reports ^
+    -otxt ^
+    -cores %cores% 
+
+::The code above is the same as a the code below
+lasinfo -i %f_in%\*.las -cd -stdout -odir %f_out%\~_reports -otxt -cores %cores% 
+    </code></pre>
+<p>In this command line example we do the following:</p>
+<ol style="list-style-type: decimal">
+<li>Specify we want to use the <code>lasinfo</code> program</li>
+<li>Specify input data location <code>-i</code> are in <code>%f_in%\*.las</code>.</li>
+<li><code>-cd</code> specifies that we want to compute point density in the files</li>
+<li><code>-stdout</code> specifies that we want a standard output format</li>
+<li>Specify the output directory <code>-odir</code> as <code>%f_out%\~_reports</code></li>
+<li>Specify that we want these outputs to be text files <code>-otxt</code></li>
+<li>Specify the number of cores we want to use <code>-cores %cores%</code></li>
+</ol>
+<p>This is the first time we encounter the <code>*.las</code> operator phrasing. The <code>*</code> is a wild-card operator, which means that all files with a <code>.las</code> appendage will be included in processing. This means that we are processing all <code>.las</code> files within the specified folder.</p>
+<p>Now that we know what this code does, lets try running it. Again, put the <code>pause</code> command after the code in your example then save and double click. You should see the script processing your files and text files with the name of each file should be written to the <code>%f_out%\~_reports</code> folder.</p>
+<p><strong><em>Before running the code enter a <code>pause</code> command on a new line. After it runs and your satisfied with the output, remove the <code>pause</code> command and highlight your code. Press <code>Ctrl-Q</code> to comment it out so it is not run again later.</em></strong></p>
+</div>
+<div id="lastile" class="section level3">
+<h3>2. <code>lastile</code></h3>
+<p>We made some summary reports about our data using <code>lasinfo</code>. Now lets start manipulating the lidar data we have. We will start with tiling the data - a vary important step for efficient processing in future stages.</p>
+<pre><code>::Tile 500m - flag buffered points as withheld for simple drop later
+lastile -i %f_in%\*.las ^
+    -tile_size 500 ^
+    -buffer 10 ^
+    -flag_as_withheld ^
+    -odir %f_out%\01_tile ^
+    -olaz ^
+    -cores %cores%</code></pre>
+<p>In this command line example we do the following:</p>
+<ol style="list-style-type: decimal">
+<li>Specify we want to use the <code>lastile</code> program</li>
+<li>Specify input data location <code>-i</code> are in <code>%f_in%\*.las</code>.</li>
+<li><code>-tile_size 500</code> specifies that we want to tile our data to 500 m</li>
+<li><code>-buffer 10</code> specifies that we want each 500m tile to include a 10 m overlap with adjacent tiles</li>
+<li><code>-flag_as_withheld</code> specifies that we want all buffer points to be flagged as withheld in the meta data.</li>
+<li><code>-odir %f_out%\01_tile</code> specifies the output folder location. This becomes in the input for the next step.</li>
+<li><code>-olaz</code> specifies that we want these outputs to be <code>.laz</code> files</li>
+<li>Specify the number of cores we want to use <code>-cores %cores%</code></li>
+</ol>
+<div id="why-tile" class="section level4">
+<h4>Why tile?</h4>
+<p>Tiling is very important for a number of reasons. Firstly, it means we can subdivide our data into smaller sections so that processing is less memory intensive. Lidar data files can be fairly large, so its good to reduce their size by tiling. I tend to think that files up to ~80MB are good for tiling, though if you have a number of files larger than 100MB its not a big deal. File size for tiling isnt really a rule I follow, but it something to be mindful of when processing</p>
+</div>
+<div id="why-buffer" class="section level4">
+<h4>Why buffer?</h4>
+<p>We specified that we wanted a tile buffer of 10 m. The buffer is especially important when processing in lastools when making rasterized outputs like DEM, DSM, CHM etc. The buffer created overlap of adjacent tiles, which means that we can make seamless rasters. If we do not tile the data and create these rasters we often see artifacts in a grid accross the image outlining the tiling extent of the files.</p>
+<p><strong><em>lidR vs lastools — buffering is a fundamental difference in processing methodology</em></strong></p>
+<p>You might be asking.</p>
+<blockquote>
+<p>“OK, so I’ve tiled and buffered by data. Now I can process it in lidR if i want to right?”</p>
+</blockquote>
+<p>The short answer is yes. But its important to know that the lidR package automatically buffers your data for you when working with a <code>lascatalog</code>. That means that if you buffer your data in lastools that there will be alot of duplicate points that need to be removed. This is why we use the <code>-flag_as_withheld</code> switch.</p>
+<p>When/If you decide to use lidR after lastools, you need to make sure to include the <code>-drop_withheld</code> switch like so: <code>lidR::readLAS(&lt;DATA&gt;,filter="-drop_withheld")</code> or <code>lidR::catalog(&lt;DATA&gt;,filter="-drop_withheld")</code>.</p>
+<p>These lidR commands will causes the process to ignore these flagged buffer points to eliminate redundancy.</p>
+<p>To cut to the chase, buffer your data but use <code>-flag_as_withheld</code> so you can easily remove the buffer if you want to process in lidR.</p>
+<p><strong><em>Before running the code enter a <code>pause</code> command on a new line. After it runs and your satisfied with the output, remove the <code>pause</code> command and highlight your code. Press <code>Ctrl-Q</code> to comment it out so it is not run again later.</em></strong></p>
+</div>
+</div>
+<div id="lasoptimize" class="section level3">
+<h3>3. <code>lasoptimize</code></h3>
+<p>This command is fairly new to lastools. It <a href="https://rapidlasso.com/lasoptimize/">optimizes</a> the data to make it more storage efficient.</p>
+<pre><code>:: Optimize las
+lasoptimize -i %f_out%\01_tile\*.laz ^
+    -odir %f_out%\02_optimized ^
+    -cores %cores%</code></pre>
+<p>These “optimized” <code>.laz</code> data become the input data for the next step.</p>
+<p><strong><em>Before running the code enter a <code>pause</code> command on a new line. After it runs and your satisfied with the output, remove the <code>pause</code> command and highlight your code. Press <code>Ctrl-Q</code> to comment it out so it is not run again later.</em></strong></p>
+</div>
+<div id="lasboundary" class="section level3">
+<h3>4. <code>lasboundary</code></h3>
+<p>You will immediately notice that the next line of code is commented out. This is largely because <code>lasboundary</code> can be <strong>exceptionally</strong> slow. The program detects the extents of the data within each lidar specified by <code>-i</code> and begins to construct a shapefile.</p>
+<pre><code>::Generate boundary shapefile
+REM lasboundary -i %f_out%\02_optimized\*.laz -drop_withheld -merged -o %f_out%\boundary.shp</code></pre>
+<p>The code does the following</p>
+<ol style="list-style-type: decimal">
+<li>sets input</li>
+<li>drops withheld points (buffered points)</li>
+<li><code>-merged</code> specifies that the output will be a merged file</li>
+<li><code>-o %f_out%\boundary.shp</code> specifies that the ouput will be a shapefile called <code>boundary.shp</code></li>
+</ol>
+<p><strong><em>Before running the code enter a <code>pause</code> command on a new line. After it runs and your satisfied with the output, remove the <code>pause</code> command and highlight your code. Press <code>Ctrl-Q</code> to comment it out so it is not run again later.</em></strong></p>
+<div id="generating-a-boundary-shapefile-using-lidr" class="section level4">
+<h4>Generating a boundary shapefile using lidR</h4>
+<p>If you need a very exact outline of your data you can use the code above, but if a more generalized extent of your will do just fine, you can use the spatial delineation generated from <code>lascatalog</code> objects from lidR. See example R code below.</p>
+<pre><code>## processing to get a rough extent of your lidar coverage
+library(lidR)
+library(sf)
+
+ctg &lt;- readLAScatalog(&quot;PATH_TO_FILES&quot;) #read catalog
+cs &lt;- as.spatial(ctg) #convert to spatial polygon dataframe
+
+plot(cs) #plot shapes
+shapefile(cs,&quot;boundary.shp&quot;) #write shapefile
+plot(cs)
+</code></pre>
+<p><strong><em>Before running the code enter a <code>pause</code> command on a new line. After it runs and your satisfied with the output, remove the <code>pause</code> command and highlight your code. Press <code>Ctrl-Q</code> to comment it out so it is not run again later.</em></strong></p>
+</div>
+</div>
+<div id="lasnoise" class="section level3">
+<h3>5. <code>lasnoise</code></h3>
+<p>Filtering for noise points is standard practice with lidar data. We want to measure height accurately, and sometimes the sensor can have noise points from atmospheric interactions, birds flying, flying saucers etc. We want to remove these noise points to make sure our data is quality controlled.</p>
+<pre><code>::Denoise
+lasnoise -i %f_out%\02_optimized\*.laz ^
+    -step 2 ^
+    -isolated 3 ^
+    -odix _denoised ^
+    -olaz ^
+    -cores %cores% </code></pre>
+<p>To filter noise i do the following:</p>
+<ol style="list-style-type: decimal">
+<li>Set input directory</li>
+<li><code>-step 2 -isolated 3</code> specify the moving window and number of isolated points to act on</li>
+<li><code>-odix _denoised</code> append "_denoised" to each file</li>
+<li><code>-olaz</code> spcify output as <code>.laz</code></li>
+<li>Specify the number of cores we want to use <code>-cores %cores%</code></li>
+</ol>
+<p><strong><em>Before running the code enter a <code>pause</code> command on a new line. After it runs and your satisfied with the output, remove the <code>pause</code> command and highlight your code. Press <code>Ctrl-Q</code> to comment it out so it is not run again later.</em></strong></p>
+</div>
+<div id="lasground" class="section level3">
+<h3>6. <code>lasground</code></h3>
+<p>A fundamental processing step. <code>lasground</code> classifies each point within files as <code>ground</code> (class 2) or not. This is very important for consequent height normalization and creating a terrain model.</p>
+<pre><code>::Classify ground
+lasground -i %f_out%\03_class\*_denoised.laz ^
+    -odir %f_out%\03_class ^
+    -olaz ^
+    -cores %cores%  
+</code></pre>
+<p>This is pretty straight forward:</p>
+<ol style="list-style-type: decimal">
+<li>Set input</li>
+<li>Set output location</li>
+<li>specify <code>.laz</code> output</li>
+<li>specify number of cores to use</li>
+</ol>
+<p><strong><em>Before running the code enter a <code>pause</code> command on a new line. After it runs and your satisfied with the output, remove the <code>pause</code> command and highlight your code. Press <code>Ctrl-Q</code> to comment it out so it is not run again later.</em></strong></p>
+</div>
+<div id="lasheight" class="section level3">
+<h3>7. <code>lasheight</code></h3>
+<p>In order for us to generate wall-to-wall structural metrics of our lidar data we need to remove the influence of terrain. This is known as height normalization, where, simply described, all points classified as ground in the previous step are set to having a height of 0, so that all points are relative to a flat surface. This means that we can compare the height of vegetation on the top of a mountain to the a tree in a deep valley without the influence of terrain.</p>
+<pre><code>::Normalize height
+lasheight -i %f_out%\03_class\*_denoised.laz ^
+    -replace_z ^
+    -odir %f_out%\04_norm ^
+    -olaz ^
+    -cores %cores%</code></pre>
+<p>Here we:</p>
+<ol style="list-style-type: decimal">
+<li>Set input</li>
+<li><code>-replace_z</code> - specifies that we replace the Z coordinate value to 0</li>
+<li>Set output directory</li>
+<li>Specify <code>.laz</code> output</li>
+<li>Specify number of cores</li>
+</ol>
+<p><strong><em>Before running the code enter a <code>pause</code> command on a new line. After it runs and your satisfied with the output, remove the <code>pause</code> command and highlight your code. Press <code>Ctrl-Q</code> to comment it out so it is not run again later.</em></strong></p>
+</div>
+<div id="rasters" class="section level3">
+<h3>Rasters</h3>
+<p>There are a number of standard raster products generated from lidar data. The most common ones include a digital terrain model, digital surface model, and canopy height model. Lets make those now.</p>
+<div id="digital-terrain-model-surface-model" class="section level4">
+<h4>Digital Terrain Model &amp; Surface model</h4>
+<p>Creation of the terrain and surface model both use the <strong>non-normalized, classified</strong> pointcloud. To start, we use the <code>blast2dem</code> program to create rasters of each file. The program <code>las2dem</code> also exists, however <code>blast</code> was made to process very large data sets extremely efficiently.</p>
+<p>We specify the points we want to use based on classification code (ground = 2), and the spatial resoltuion we want our raster to be (In this case I used 1 m).</p>
+<pre><code>:: make DTM
+blast2dem -i %f_out%\03_class\*_denoised.laz ^
+    -keep_class 2 ^
+    -step 1 ^
+    -use_tile_bb ^
+    -odix _dtm ^
+    -obil ^
+    -odir %f_out%\05_raster\dtm ^
+    -kill 200 ^
+    -cores %cores%</code></pre>
+<p>Here we:</p>
+<ol style="list-style-type: decimal">
+<li>Specify input data (denoised, classfied data)</li>
+<li><code>-keep_class 2</code> specify that we want to use only the points classified as ground (class 2)</li>
+<li><code>-step 1</code> specify we want a 1 m spatial resolution on outputs</li>
+<li><code>-use_tile_bb</code> specify that the algorithm should use the bounding box of individual tiles for outputs</li>
+<li><code>odix _dtx</code> append "_dtm" to ouputs</li>
+<li><code>-obil</code> specify we want output files to be <code>.bil</code> (a raster format that is very storage efficient)</li>
+<li>specify output directory</li>
+<li><code>-kill 200</code> specify max distance for interpolation (200 m).</li>
+<li>Specify number of cores</li>
+</ol>
+<p><strong><em>Before running the code enter a <code>pause</code> command on a new line. After it runs and your satisfied with the output, remove the <code>pause</code> command and highlight your code. Press <code>Ctrl-Q</code> to comment it out so it is not run again later.</em></strong></p>
+<p>After this runs, you will have a folder full of <code>.bil</code> files for each individual lidar file. While this is great, ideally we want the files to be merged together so we have a seamless DTM. To do that we use <code>lasgrid</code> to merge all the <code>.bil</code> files together.</p>
+<pre><code>::merge DTM .bil files
+lasgrid -i %f_out%\05_raster\dtm\*.bil -merged ^
+    -step 1 ^
+    -o %f_out%\05_raster\DTM_.tif</code></pre>
+<p>Here we:</p>
+<ol style="list-style-type: decimal">
+<li>Specified input folder with <code>.bil</code> files</li>
+<li>Specify that all those <code>.bil</code> files need to be merged together</li>
+<li>Specify a single output file named <code>DTM_.tif</code></li>
+</ol>
+<blockquote>
+<p>Note that we output a single file using <code>-o</code> and multiple files using <code>-odir</code></p>
+</blockquote>
+<p><strong><em>Before running the code enter a <code>pause</code> command on a new line. After it runs and your satisfied with the output, remove the <code>pause</code> command and highlight your code. Press <code>Ctrl-Q</code> to comment it out so it is not run again later.</em></strong></p>
+<p>After this finishes, open the file up in ArcMap, or in a imager viewer like Irfanview and see what it looks like. Instead of <code>.tif</code> you can also choose other output file types like <code>.png</code> or <code>.bil</code>.</p>
+</div>
+<div id="digital-surface-model" class="section level4">
+<h4>Digital Surface model</h4>
+<p>The code for making the digital surface model is very similar to the terrain models so i paste it here with few details. The only real difference is we <strong>do not</strong> use <code>-keep_class</code>, which defaults the point selection to the maximum.</p>
+<pre><code>:: make DSM
+blast2dem -i %f_out%\03_class\*_denoised.laz ^
+    -step 1 ^
+    -kill 200 ^
+    -use_tile_bb ^
+    -odix _dsm  ^
+    -obil ^
+    -odir %f_out%\05_raster\dsm ^
+    -cores %cores%
+
+::merge DSM .bil files
+lasgrid -i %f_out%\05_raster\dsm\*.bil -merged ^
+    -step 1 ^
+    -o %f_out%\05_raster\DSM_.tif</code></pre>
+<p><strong><em>Before running the code enter a <code>pause</code> command on a new line. After it runs and your satisfied with the output, remove the <code>pause</code> command and highlight your code. Press <code>Ctrl-Q</code> to comment it out so it is not run again later.</em></strong></p>
+</div>
+<div id="canopy-height-model" class="section level4">
+<h4>Canopy Height Model</h4>
+<p>The code for making a canopy height model is very similar to that of the DTM and DSM. The major difference is that we need to use the <strong>normalized point cloud data</strong>. The CHM is the rasterization of the maximum height for normalized point clouds. So we need to specify that we we have to use the max height. It is also common practice to use only the first returns of the data so we use a switch to specify that aswell.</p>
+<pre><code>:: make CHM
+lasgrid -i %f_out%\04_norm\*.laz ^
+    -max ^
+    -first_only ^
+    -step 1 ^
+    -odir %f_out%\05_raster\chm ^
+    -odix _chm ^
+    -obil ^
+    -cores %cores%
+    
+lasgrid -i %f_out%\05_raster\chm\*.bil -merged ^
+    -step 1 ^
+    -o %f_out%\05_raster\CHM_.tif</code></pre>
+<p>Here we:</p>
+<ol style="list-style-type: decimal">
+<li>Specify normalized input data</li>
+<li><code>-max</code> specify that we want to rasterize the maximum height of the data</li>
+<li><code>-first_only</code> specify that we want to use only first returns</li>
+<li><code>-step 1</code> specify that we want a spatial resolution of 1 m for our rasters</li>
+<li>Specify output directory</li>
+<li><code>-odix _chm</code> append "_chm" to file names</li>
+<li><code>-obil</code> specify output as <code>.bil</code></li>
+<li>Specify number of cores to use</li>
+<li>Merge all created <code>.bil</code> files into a seamless raster with 1 m spatial resolution called <code>CHM_.tif</code></li>
+</ol>
+<p><strong><em>Before running the code enter a <code>pause</code> command on a new line. After it runs and your satisfied with the output, remove the <code>pause</code> command and highlight your code. Press <code>Ctrl-Q</code> to comment it out so it is not run again later.</em></strong></p>
+</div>
+<div id="point-density-image" class="section level4">
+<h4>Point Density Image</h4>
+<p>Using the details we learned from making the DTM, DSM, and CHM, we can also make rasters of other metrics like point density or structural metrics. I dont describe these in detail as we have covered alot fo this already, but run the code and see what the ouputs look like.</p>
+<pre><code>:: Compute density image
+lasgrid -i %f_out%\04_norm\*.laz ^
+    -step 1 ^
+    -point_density_16bit ^
+    -odir %f_out%\05_raster\den ^
+    -odix _den  -obil ^
+    -cores %cores%
+
+:: tif
+lasgrid -i %f_out%\05_raster\den\*.bil -merged ^
+    -step 1 ^
+    -o %f_out%\05_raster\density_allreturns_.tif
+
+:: png      
+lasgrid -i %f_out%\05_raster\den\*.bil -merged ^
+    -step 1 ^
+    -false -set_min_max 0 5 ^
+    -o %f_out%\05_raster\density_allreturns_0_5_.png</code></pre>
+<p>Structural metrics in lastools is straightforward. We use the <code>lascanopy</code> program and specify the percentiles we want to calculate using the<code>-p</code> switch. Calcualting other metrics is possible, just consult the <a href="http://lastools.org/download/lascanopy_README.txt">README</a>.</p>
+<pre><code>:: Compute structural metrics
+lascanopy -i %f_out%\04_norm\*.laz ^
+    -merged ^
+    -p 10 25 50 75 99 ^
+    -step 20 ^
+    -o %f_out%\05_raster\struc.tif</code></pre>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,14 @@
+name: "Tristan Goodbody"
+navbar:
+  title: "IRSS LAStools Tutorial"
+  left:
+    - text: "Installing"
+      href: 01-intro.html
+    - text: "Scripting"
+      href: 02-scripting.html
+    - text: "Example Script"
+      href: 03-examplescript.html
+    - text: "Getting Started"
+      href: 04-gettingstarted.html
+    - text: "Looping"
+      href: 05-looping.html

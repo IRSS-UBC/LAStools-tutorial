@@ -1,0 +1,106 @@
+---
+title: "Scripting Basics"
+author: "Tristan Goodbody"
+date: "01/03/2021"
+output: html_document
+---
+
+## Basics of lastools commandline
+
+Lastools command line is simple and follows a standard format. For each lastools program there is an associated `README.txt` file in the `C:\lastools\bin` and also online e.g. [las2las README](http://lastools.org/download/las2las_README.txt). The documentation for lastools is very good. Should you ever have questions about functionality consult these resources first.
+
+The standard format for lastools command line is `<PROGRAM NAME> -i <INPUT DATA> -o <OUTPUT DATA>`. We have already seen an example of this format before:
+
+```
+las2las -i example.las -o example.laz
+
+```
+The lastools command line defines parameters for each program using switches. Each switch is triggered using `-` followed by the corresponding switch code. Here are a few examples
+
+* `-i` - Input data location. This can be a single file `example.las` or a file directory `data\*.las`.
+* `-o` - Output data location for single file
+* `-odir` - Output directory when processing multiple files
+* `-olaz` - Specify output file type as `.laz` -- `.las` is the default.
+* `-odix` - apply an index to each output. i.e `-odix _filter` would give a file named `example_filter.las`
+
+There are **ALOT** of different switches that can be used. Some are program specific, while others can be used for many different programs. If you are in doubt, consult the README file - there are coded examples!
+
+## Starting Commands
+
+### `lasinfo`
+
+Lets dive in and start by learning some details about an example lidar file. The `lasinfo` program analyzes the lidar input `-i example.las` and provides details about it. Using one of your own files, open up a command line window and try the following. Replace `example.las` with the full path to your example file.
+
+```
+lasinfo -i example.las
+```
+
+You will get an output that looks someting like this:
+
+```
+lasinfo (190321) report for 'example.las'
+reporting all LAS header entries:
+  file signature:             'LASF'
+  file source ID:             0
+  global_encoding:            0
+  project ID GUID data 1-4:   00000000-0000-0000-0000-000000000000
+  version major.minor:        1.2
+  system identifier:          ''
+  generating software:        'TerraScan'
+  file creation day/year:     331/2015
+  header size:                227
+  offset to point data:       229
+  number var. length records: 0
+  point data format:          1
+  point data record length:   28
+  number of point records:    6111026
+  number of points by return: 3336268 1713678 732717 247729 65452
+  scale factor x y z:         0.001 0.001 0.001
+  offset x y z:               0 0 0
+  min x y z:                  1138000.000 556223.679 776.175
+  max x y z:                  1138499.999 556599.999 1219.505
+the header is followed by 2 user-defined bytes
+reporting minimum and maximum for all LAS point record entries ...
+  X          1138000000 1138499999
+  Y           556223679  556599999
+  Z              776175    1219505
+  intensity           0      65535
+  return_number       1          7
+  number_of_returns   1          7
+  edge_of_flight_line 0          1
+  scan_direction_flag 0          0
+  classification      1          2
+  scan_angle_rank   -30         31
+  user_data           1          2
+  point_source_ID  1114       2122
+  gps_time 415636.722498 418671.480215
+WARNING: there is coordinate resolution fluff (x10) in Z
+number of first returns:        3336268
+number of intermediate returns: 1063895
+number of last returns:         3331828
+number of single returns:       1620965
+covered area in square units/kilounits: 160396/0.16
+point density: all returns 38.10 last only 20.77 (per square units)
+      spacing: all returns 0.16 last only 0.22 (in units)
+WARNING: there are 13033 points with return number 6
+WARNING: there are 2149 points with return number 7
+overview over number of returns of given pulse: 1620965 1958874 1457025 730576 262929 66894 13763
+histogram of classification of points:
+         5670537  unclassified (1)
+          440489  ground (2)
+```
+
+From this readout we see information on the coordinates, number of points, classification, return numbers etc.
+
+### `lasview`
+
+We have all seen marvelous example of lidar data visualizations, and its important to look at your lidar at various processing stages to make sure that it looks like what you would expect. Questions like _"should my data look this way"_ are important to consider when processing to make sure you are doing what you intended.
+
+Like you did in the previous example, open up a command prompt window and test the following example on your own lidar file to see what it looks like.
+
+```
+lasview -i example.las
+```
+When the lasviewer window open, you will see your example lidar file visualized. To change visualization settings, right click on the window and a drop down menu will appear with various parameter you can specify. To change how you can rotate/zoom/translate the data simple press the space bar.
+
+

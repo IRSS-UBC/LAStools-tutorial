@@ -1,0 +1,259 @@
+---
+title: "Looping"
+author: "Tristan Goodbody"
+date: "02/03/2021"
+output: html_document
+---
+
+## Looping over multiple folders
+
+If you are working on a project where you have multiple sites, or where you want to process the data in different batches, we can process those individual directories within a loop. A quirk of microsoft DOS is that if you are looping, you do not include all code within a loop, rather you create a loop that defines your global variables like `%f_in% %f_out%` etc, then call the code you'd like to run using the `:<CODEBLOCK NAME>` operator. 
+
+A rule for looping is that we first need to include the following at the start of the script.
+
+```
+SETLOCAL ENABLEDELAYEDEXPANSION
+```
+
+### Setting up `.txt` for loop
+We need to tell the program to loop over multiple subdirectories. The method I tend to use is to first create a `.txt` file that has the names of each directory you want to process. These are then used to iterate each loop. This happens in the following lines: 
+
+```
+::Create List of folders for looping through
+
+::if you have more than 1 location to process, lines 1-27 are needed
+dir /b /a:d D:\Sites >> locations.txt
+```
+This code specifies the Root directory we are using (`D:\Sites`) and lists all  subdirectories into a file called `locations.txt`.
+
+In order for this to work, you need to make sure that your folder hierarchy is correct. See the example below, where the `locations.txt` file would have the names `Site1 Site2 Site3 Site4`.
+
+```
+# Example folder structure
+Sites/
+  ├── Site1
+  ├── Site2
+  ├── Site3
+  └── Site4
+```
+
+***IMPORTANT*** - If you run this code more than once it will repeat the names of your subdirectories into the same file. This means it will process folders multiple times. My advice is:
+
+1. Make sure you are satisfied with your code and that it works
+2. Test the loop on a single subdirectory first (open the `.txt` file and delete everything other than first folder)
+3. Check the `.txt` for accuracy and comment out these lines before you run it over your intended subdirectories
+
+
+### Setting up the loop
+
+Now that we have our `.txt` file with locations of our data we want to process we can set up the loop. Ive split the loop up into sections to outline what each do.
+
+Here we define a for loop. We use the `for /f` command and specify that the delimeters (`demlims`) are spaces because there are spaces between `Site1 Site2 Site3 Site4` within our text file. `%%a` is the variable that is being defined in the loop from our `locations.txt` file - i.e. in the first iteration `%%a = Site1`, second iteration `%%a = Site2` etc.
+
+In simple language the loop can be read like this:
+
+>Loop over each string in `locations.txt` and set that string to `%%a`
+
+```
+::Use folder list to process
+
+for /f "delims= " %%a in (locations.txt) do (
+
+```
+
+### Define global environments
+
+Given that our folder locations are changing for each loop iteration, we need to define the global environments each time. In this case we need to set `f_in` and `f_out` to the path locations, where `%%a` is the subdirectory we are looping on.
+
+I also like to set the location name to a variable `loc` so i can include it in file output names like `DTM_Site1.tif`
+
+```
+:: Set global environments
+set f_in=G:\Sites\%%a\raw
+set f_out=G:\Sites\%%a
+
+set loc=%%a
+set cores=8
+```
+
+### Calling the code
+
+The final part of the loop is to call the code we want to run and close the loop. This is very straight forward. Notice the `:las` after the closing bracket of the loop. This is the marker that is being called using `call :las` this means that all the code after `:las` outside of the loop will be processed.
+
+```
+call :las
+
+	)
+
+:las
+
+<ALL THE CODE WE WANT TO RUN>
+<ALL THE CODE WE WANT TO RUN>
+<ALL THE CODE WE WANT TO RUN>
+```
+
+### Putting it all together
+
+Here is what the code looks like together with the example given in the previous example script.
+
+```
+::Tristan Goodbody -- goodbody.t@alumni.ubc.ca
+
+SETLOCAL ENABLEDELAYEDEXPANSION
+::Create List of folders for looping through
+
+::if you have more than 1 location to process, lines 1-27 are needed
+REM dir /b /a:d D:\tutorial\Sites >> locations.txt
+
+REM pause
+
+::Use folder list to process
+
+for /f "delims= " %%a in (locations.txt) do (
+
+:: Set global environments
+set f_in=D:\tutorial\Sites\%%a\raw
+set f_out=D:\tutorial\Sites\%%a
+
+set loc=%%a
+set cores=8
+
+call :las
+
+	)
+
+:las
+
+:: processing stream
+:: if a folder doesnt already exist -> make that folder
+IF NOT EXIST %f_out% MKDIR %f_out%
+IF NOT EXIST %f_out%\~_reports MKDIR %f_out%\~_reports
+IF NOT EXIST %f_out%\01_tile MKDIR %f_out%\01_tile
+IF NOT EXIST %f_out%\02_optimized MKDIR %f_out%\02_optimized
+IF NOT EXIST %f_out%\03_class MKDIR %f_out%\03_class
+IF NOT EXIST %f_out%\04_norm MKDIR %f_out%\04_norm
+IF NOT EXIST %f_out%\05_raster\dtm MKDIR %f_out%\05_raster\dtm
+IF NOT EXIST %f_out%\05_raster\dsm MKDIR %f_out%\05_raster\dsm
+IF NOT EXIST %f_out%\05_raster\chm MKDIR %f_out%\05_raster\chm
+IF NOT EXIST %f_out%\05_raster\den MKDIR %f_out%\05_raster\den
+
+::Info about data
+lasinfo -i %f_in%\*.laz ^
+	-cd ^
+	-stdout ^
+	-odir %f_out%\~_reports ^
+	-otxt ^
+	-cores %cores% 
+
+::Tile 500m - flag buffered points as withheld for simple drop later
+lastile -i %f_in%\*.laz ^
+	-tile_size 500 ^
+	-buffer 10 ^
+	-flag_as_withheld ^
+	-odir %f_out%\01_tile ^
+	-olaz ^
+	-cores %cores%
+
+:: Optimize las
+lasoptimize -i %f_out%\01_tile\*.laz ^
+	-odir %f_out%\02_optimized ^
+	-cores %cores%
+
+::Generate boundary shapefile
+REM lasboundary -i %f_out%\02_optimized\*.laz -drop_withheld -merged -o %f_out%\boundary.shp
+
+::Denoise
+lasnoise -i %f_out%\02_optimized\*.laz ^
+	-step 2 ^
+	-isolated 3 ^
+	-odix _denoised ^
+	-olaz ^
+	-cores %cores% 
+	
+::Classify ground
+lasground -i %f_out%\02_optimized\*_denoised.laz ^
+	-odir %f_out%\03_class ^
+	-olaz ^
+	-cores %cores%  
+
+::Normalize height
+lasheight -i %f_out%\03_class\*_denoised.laz ^
+	-replace_z ^
+	-odir %f_out%\04_norm ^
+	-olaz ^
+	-cores %cores%
+
+:: make DTM
+blast2dem -i %f_out%\03_class\*_denoised.laz ^
+	-keep_class 2 ^
+	-step 1 ^
+	-use_tile_bb ^
+	-odix _dtm ^
+	-obil ^
+	-odir %f_out%\05_raster\dtm ^
+	-kill 200 ^
+	-cores %cores%
+
+::merge DTM .bil files
+lasgrid -i %f_out%\05_raster\dtm\*.bil -merged ^
+	-step 1 ^
+	-false ^
+	-o %f_out%\05_raster\DTM_%loc%.png	
+
+:: make DSM
+blast2dem -i %f_out%\03_class\*_denoised.laz ^
+	-step 1 ^
+	-kill 200 ^
+	-use_tile_bb ^
+	-odix _dsm	^
+	-obil ^
+	-odir %f_out%\05_raster\dsm ^
+	-cores %cores%
+
+::merge DSM .bil files
+lasgrid -i %f_out%\05_raster\dsm\*.bil -merged ^
+	-step 1 ^
+	-false ^
+	-o %f_out%\05_raster\DSM_%loc%.png
+
+:: make CHM
+lasgrid -i %f_out%\04_norm\*.laz ^
+	-max ^
+	-first_only ^
+	-step 1 ^
+	-odir %f_out%\05_raster\chm ^
+	-odix _chm ^
+	-obil ^
+	-cores %cores%
+
+lasgrid -i %f_out%\05_raster\chm\*.bil -merged ^
+	-step 1 ^
+	-false ^
+	-o %f_out%\05_raster\CHM_%loc%.png
+
+:: Compute density image
+lasgrid -i %f_out%\04_norm\*.laz ^
+	-step 1 ^
+	-point_density_16bit ^
+	-odir %f_out%\05_raster\den ^
+	-odix _den	-obil ^
+	-cores %cores%
+
+:: tif
+lasgrid -i %f_out%\05_raster\den\*.bil -merged ^
+	-step 1 ^
+	-o %f_out%\05_raster\density_allreturns_.tif
+
+:: png		
+lasgrid -i %f_out%\05_raster\den\*.bil -merged ^
+	-step 1 ^
+	-false -set_min_max 0 5 ^
+	-o %f_out%\05_raster\density_allreturns_0_5_%loc%.png
+	
+:: Compute structural metrics
+lascanopy -i %f_out%\04_norm\*.laz ^
+	-merged ^
+	-p 10 25 50 75 99 ^
+	-step 20 ^
+	-o %f_out%\05_raster\struc.tif
+```

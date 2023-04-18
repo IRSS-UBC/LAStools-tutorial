@@ -1,0 +1,150 @@
+---
+title: "Example Script"
+author: "Tristan Goodbody"
+date: "01/03/2021"
+output: html_document
+---
+
+```
+::2021 lastools processing tutorial
+::Tristan Goodbody -- goodbody.t@alumni.ubc.ca
+
+:: Set global variables
+set f_in=D:\Sites\Site1\raw
+set f_out=D:\Sites\Site1
+
+set cores=4
+
+:: processing stream
+:: if a folder doesnt already exist -> make that folder
+IF NOT EXIST %f_out% MKDIR %f_out%
+IF NOT EXIST %f_out%\~_reports MKDIR %f_out%\~_reports
+IF NOT EXIST %f_out%\01_tile MKDIR %f_out%\01_tile
+IF NOT EXIST %f_out%\02_optimized MKDIR %f_out%\02_optimized
+IF NOT EXIST %f_out%\03_class MKDIR %f_out%\03_class
+IF NOT EXIST %f_out%\04_norm MKDIR %f_out%\04_norm
+IF NOT EXIST %f_out%\05_raster\dtm MKDIR %f_out%\05_raster\dtm
+IF NOT EXIST %f_out%\05_raster\dsm MKDIR %f_out%\05_raster\dsm
+IF NOT EXIST %f_out%\05_raster\chm MKDIR %f_out%\05_raster\chm
+IF NOT EXIST %f_out%\05_raster\den MKDIR %f_out%\05_raster\den
+
+::Info about data
+lasinfo -i %f_in%\*.laz ^
+	-cd ^
+	-stdout ^
+	-odir %f_out%\~_reports ^
+	-otxt ^
+	-cores %cores% 
+
+::Tile 500m - flag buffered points as withheld for simple drop later
+lastile -i %f_in%\*.laz ^
+	-tile_size 500 ^
+	-buffer 10 ^
+	-flag_as_withheld ^
+	-odir %f_out%\01_tile ^
+	-olaz ^
+	-cores %cores%
+
+:: Optimize las
+lasoptimize -i %f_out%\01_tile\*.laz ^
+	-odir %f_out%\02_optimized ^
+	-cores %cores%
+
+::Generate boundary shapefile
+REM lasboundary -i %f_out%\02_optimized\*.laz -drop_withheld -merged -o %f_out%\boundary.shp
+
+::Denoise
+lasnoise -i %f_out%\02_optimized\*.laz ^
+	-step 2 ^
+	-isolated 3 ^
+	-odix _denoised ^
+	-olaz ^
+	-cores %cores% 
+	
+::Classify ground
+lasground -i %f_out%\02_optimized\*_denoised.laz ^
+	-odir %f_out%\03_class ^
+	-olaz ^
+	-cores %cores%  
+
+::Normalize height
+lasheight -i %f_out%\03_class\*_denoised.laz ^
+	-replace_z ^
+	-odir %f_out%\04_norm ^
+	-olaz ^
+	-cores %cores%
+
+:: make DTM
+blast2dem -i %f_out%\03_class\*_denoised.laz ^
+	-keep_class 2 ^
+	-step 1 ^
+	-use_tile_bb ^
+	-odix _dtm ^
+	-obil ^
+	-odir %f_out%\05_raster\dtm ^
+	-kill 200 ^
+	-cores %cores%
+
+::merge DTM .bil files
+lasgrid -i %f_out%\05_raster\dtm\*.bil -merged ^
+	-step 1 ^
+	-false ^
+	-o %f_out%\05_raster\DTM_.png	
+
+:: make DSM
+blast2dem -i %f_out%\03_class\*_denoised.laz ^
+	-step 1 ^
+	-kill 200 ^
+	-use_tile_bb ^
+	-odix _dsm	^
+	-obil ^
+	-odir %f_out%\05_raster\dsm ^
+	-cores %cores%
+
+::merge DSM .bil files
+lasgrid -i %f_out%\05_raster\dsm\*.bil -merged ^
+	-step 1 ^
+	-false ^
+	-o %f_out%\05_raster\DSM_.png
+
+:: make CHM
+lasgrid -i %f_out%\04_norm\*.laz ^
+	-max ^
+	-first_only ^
+	-step 1 ^
+	-odir %f_out%\05_raster\chm ^
+	-odix _chm ^
+	-obil ^
+	-cores %cores%
+
+lasgrid -i %f_out%\05_raster\chm\*.bil -merged ^
+	-step 1 ^
+	-false ^
+	-o %f_out%\05_raster\CHM_.png
+
+:: Compute density image
+lasgrid -i %f_out%\04_norm\*.laz ^
+	-step 1 ^
+	-point_density_16bit ^
+	-odir %f_out%\05_raster\den ^
+	-odix _den	-obil ^
+	-cores %cores%
+
+:: tif
+lasgrid -i %f_out%\05_raster\den\*.bil -merged ^
+	-step 1 ^
+	-o %f_out%\05_raster\density_allreturns_.tif
+
+:: png		
+lasgrid -i %f_out%\05_raster\den\*.bil -merged ^
+	-step 1 ^
+	-false -set_min_max 0 5 ^
+	-o %f_out%\05_raster\density_allreturns_0_5_.png
+	
+:: Compute structural metrics
+lascanopy -i %f_out%\04_norm\*.laz ^
+	-merged ^
+	-p 10 25 50 75 99 ^
+	-step 20 ^
+	-o %f_out%\05_raster\struc.tif
+```

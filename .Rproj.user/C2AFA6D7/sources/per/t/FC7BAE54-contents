@@ -1,0 +1,115 @@
+---
+title: "Introduction"
+author: "Tristan Goodbody"
+date: "01/03/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Installing LAStools
+
+I'm going to quickly show you how to install LAStools and get your workstation ready to start processing data. There are 4 steps you need to follow:
+
+1. Install LAStools
+2. Update environment variables
+3. Update LAStools licence
+4. Install code editor
+
+### Installing LAStools
+
+This step is easy. Navigate to the [LAStools website](https://rapidlasso.com/lastools/) and install the newest version to your `C:\` drive. Once downloaded and installed, open the `C:\lastools\bin` folder and copy the path. You will need it for the next step of the tutorial.
+
+### Environment variables
+
+The `bin` folder in lastools has a number of `.exe` files that are the programs LAStools uses to process data. It is important that our computer knows where these programs are on our hard-drive so that we can write simple code without having to specify the file path everytime. See the example code below that shows what a line of code looks like with and without specifying environment variables for converting a `.las` file to `.laz`.
+
+```
+## If we dont setup the environment variables
+## Need to specify path everytime
+
+C:\lastools\bin\las2las.exe -i example.las -o example.laz
+
+## If we do setup the environment variables
+## No need to specify path
+
+las2las -i example.las -o example.laz
+
+```
+
+***You only need to do this 1 time***
+
+Having copied the `bin` file path, press you windows key or click the windows icon in the bottom left of your computer screen and type `environment variables`. Click the suggested `edit your systems envrionment variables`. A system properties window will then open. Click the option on the bottom right of the window that says `Environment Variables...`. A new window will open with 2 sections (top & bottom). Ignore the top section. In the bottom section (`System variables`), scroll until you see the `Path` variable, which has a list of file paths in the `Value` column. Double click on the list of file paths and the `Edit environmental variable` window will appear. Click the `New` button and paste the lastools `bin` folder path from the previous section and click `OK`. 
+
+### Update LAStools license
+
+LAStools is not a free software! Some programs _within_ lastools are open source (e.g. `las2las  laszip` etc.), while others can be used to an extent without a license (small datasets, limited number of points/spatial coverage/***single core processing***). In order to make use of the full utility of lastools, Nicholas has purchased a license, which opens up the full functionality of the software.
+
+By default, this license is not installed. In order to install the license:
+
+1. Navigate to `\\FRST-IRSStor\Root\ByProject\1_LiDAR software\lastools`.
+2. Copy the text file called `lastoolslicense.txt`.
+3. Navigate to `C:\lastools\bin`
+4. Paste the `lastoolslicense.txt` file.
+
+We now need to activate the license. In doing this you are about to start using lastools for the first time! Wow, what a whirlwind its been! You have come so far and I am proud of your accomplishments!
+
+To activate the license open up a command prompt window by pressing the windows key and typing cmd. Once the command prompt is open paste in the following code
+
+```
+lascopy -license
+```
+
+If it worked, you will see something like the code below. If you don't see this, there is likely an issue with your system variables. If this happens please feel free to email Piotr and he will help you.
+
+```
+LAStools (by martin@rapidlasso.com) version 201207 (academic)
+holder:      Campus_Wide_University_of_British_Columbia_Vancouver
+start date:  210108
+duration:    365 days
+maintenance: yes
+remaining:   365 days
+# of seats:  office-wide (this location)
+type:        academic
+licensed tools:
+  lasgrid
+  lasground + lasground_new
+  lasheight
+  lasclassify
+  lasboundary
+  lasclip
+  lasthin
+  las2dem
+  las2tin
+  las2iso
+  lastool + lasview
+  lassort
+  lasduplicate
+  lascontrol
+  lascolor
+  blast2dem + blast2iso
+  lastile
+  lasplanes
+  shp2las + las2shp
+  lassplit
+  lasoverlap
+  lascanopy
+  lasnoise
+  lascopy
+  lastrack
+  lasoverage
+  lasreturn
+  lasvoxel
+  lasdistance
+
+
+```
+
+## Install code editor
+
+To use LAStools, I suggest learning to script using the LAStools commandline functionality. A LAStools GUI does exist... though I have never used it and am usually quite scared when I see it open. The command line is simple and very well documented. New coders shouldn't be discouraged!
+
+To start, its important to have a code editor that you like using. I typically use [Notepad++](https://notepad-plus-plus.org/downloads/), though any code editor should work.
+

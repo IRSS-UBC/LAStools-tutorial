@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Tristan Goodbody" />
+
+<meta name="date" content="2021-02-03" />
+
+<title>Looping</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">IRSS LAStools Tutorial</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="01-intro.html">Installing</a>
+</li>
+<li>
+  <a href="02-scripting.html">Scripting</a>
+</li>
+<li>
+  <a href="03-examplescript.html">Example Script</a>
+</li>
+<li>
+  <a href="04-gettingstarted.html">Getting Started</a>
+</li>
+<li>
+  <a href="05-looping.html">Looping</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Looping</h1>
+<h4 class="author">Tristan Goodbody</h4>
+<h4 class="date">02/03/2021</h4>
+
+</div>
+
+
+<div id="looping-over-multiple-folders" class="section level2">
+<h2>Looping over multiple folders</h2>
+<p>If you are working on a project where you have multiple sites, or where you want to process the data in different batches, we can process those individual directories within a loop. A quirk of microsoft DOS is that if you are looping, you do not include all code within a loop, rather you create a loop that defines your global variables like <code>%f_in% %f_out%</code> etc, then call the code you’d like to run using the <code>:&lt;CODEBLOCK NAME&gt;</code> operator.</p>
+<p>A rule for looping is that we first need to include the following at the start of the script.</p>
+<pre><code>SETLOCAL ENABLEDELAYEDEXPANSION</code></pre>
+<div id="setting-up-.txt-for-loop" class="section level3">
+<h3>Setting up <code>.txt</code> for loop</h3>
+<p>We need to tell the program to loop over multiple subdirectories. The method I tend to use is to first create a <code>.txt</code> file that has the names of each directory you want to process. These are then used to iterate each loop. This happens in the following lines:</p>
+<pre><code>::Create List of folders for looping through
+
+::if you have more than 1 location to process, lines 1-27 are needed
+dir /b /a:d D:\Sites &gt;&gt; locations.txt</code></pre>
+<p>This code specifies the Root directory we are using (<code>D:\Sites</code>) and lists all subdirectories into a file called <code>locations.txt</code>.</p>
+<p>In order for this to work, you need to make sure that your folder hierarchy is correct. See the example below, where the <code>locations.txt</code> file would have the names <code>Site1 Site2 Site3 Site4</code>.</p>
+<pre><code># Example folder structure
+Sites/
+  ├── Site1
+  ├── Site2
+  ├── Site3
+  └── Site4</code></pre>
+<p><strong><em>IMPORTANT</em></strong> - If you run this code more than once it will repeat the names of your subdirectories into the same file. This means it will process folders multiple times. My advice is:</p>
+<ol style="list-style-type: decimal">
+<li>Make sure you are satisfied with your code and that it works</li>
+<li>Test the loop on a single subdirectory first (open the <code>.txt</code> file and delete everything other than first folder)</li>
+<li>Check the <code>.txt</code> for accuracy and comment out these lines before you run it over your intended subdirectories</li>
+</ol>
+</div>
+<div id="setting-up-the-loop" class="section level3">
+<h3>Setting up the loop</h3>
+<p>Now that we have our <code>.txt</code> file with locations of our data we want to process we can set up the loop. Ive split the loop up into sections to outline what each do.</p>
+<p>Here we define a for loop. We use the <code>for /f</code> command and specify that the delimeters (<code>demlims</code>) are spaces because there are spaces between <code>Site1 Site2 Site3 Site4</code> within our text file. <code>%%a</code> is the variable that is being defined in the loop from our <code>locations.txt</code> file - i.e. in the first iteration <code>%%a = Site1</code>, second iteration <code>%%a = Site2</code> etc.</p>
+<p>In simple language the loop can be read like this:</p>
+<blockquote>
+<p>Loop over each string in <code>locations.txt</code> and set that string to <code>%%a</code></p>
+</blockquote>
+<pre><code>::Use folder list to process
+
+for /f &quot;delims= &quot; %%a in (locations.txt) do (
+</code></pre>
+</div>
+<div id="define-global-environments" class="section level3">
+<h3>Define global environments</h3>
+<p>Given that our folder locations are changing for each loop iteration, we need to define the global environments each time. In this case we need to set <code>f_in</code> and <code>f_out</code> to the path locations, where <code>%%a</code> is the subdirectory we are looping on.</p>
+<p>I also like to set the location name to a variable <code>loc</code> so i can include it in file output names like <code>DTM_Site1.tif</code></p>
+<pre><code>:: Set global environments
+set f_in=G:\Sites\%%a\raw
+set f_out=G:\Sites\%%a
+
+set loc=%%a
+set cores=8</code></pre>
+</div>
+<div id="calling-the-code" class="section level3">
+<h3>Calling the code</h3>
+<p>The final part of the loop is to call the code we want to run and close the loop. This is very straight forward. Notice the <code>:las</code> after the closing bracket of the loop. This is the marker that is being called using <code>call :las</code> this means that all the code after <code>:las</code> outside of the loop will be processed.</p>
+<pre><code>call :las
+
+    )
+
+:las
+
+&lt;ALL THE CODE WE WANT TO RUN&gt;
+&lt;ALL THE CODE WE WANT TO RUN&gt;
+&lt;ALL THE CODE WE WANT TO RUN&gt;</code></pre>
+</div>
+<div id="putting-it-all-together" class="section level3">
+<h3>Putting it all together</h3>
+<p>Here is what the code looks like together with the example given in the previous example script.</p>
+<pre><code>::Tristan Goodbody -- goodbody.t@alumni.ubc.ca
+
+SETLOCAL ENABLEDELAYEDEXPANSION
+::Create List of folders for looping through
+
+::if you have more than 1 location to process, lines 1-27 are needed
+REM dir /b /a:d D:\tutorial\Sites &gt;&gt; locations.txt
+
+REM pause
+
+::Use folder list to process
+
+for /f &quot;delims= &quot; %%a in (locations.txt) do (
+
+:: Set global environments
+set f_in=D:\tutorial\Sites\%%a\raw
+set f_out=D:\tutorial\Sites\%%a
+
+set loc=%%a
+set cores=8
+
+call :las
+
+    )
+
+:las
+
+:: processing stream
+:: if a folder doesnt already exist -&gt; make that folder
+IF NOT EXIST %f_out% MKDIR %f_out%
+IF NOT EXIST %f_out%\~_reports MKDIR %f_out%\~_reports
+IF NOT EXIST %f_out%\01_tile MKDIR %f_out%\01_tile
+IF NOT EXIST %f_out%\02_optimized MKDIR %f_out%\02_optimized
+IF NOT EXIST %f_out%\03_class MKDIR %f_out%\03_class
+IF NOT EXIST %f_out%\04_norm MKDIR %f_out%\04_norm
+IF NOT EXIST %f_out%\05_raster\dtm MKDIR %f_out%\05_raster\dtm
+IF NOT EXIST %f_out%\05_raster\dsm MKDIR %f_out%\05_raster\dsm
+IF NOT EXIST %f_out%\05_raster\chm MKDIR %f_out%\05_raster\chm
+IF NOT EXIST %f_out%\05_raster\den MKDIR %f_out%\05_raster\den
+
+::Info about data
+lasinfo -i %f_in%\*.laz ^
+    -cd ^
+    -stdout ^
+    -odir %f_out%\~_reports ^
+    -otxt ^
+    -cores %cores% 
+
+::Tile 500m - flag buffered points as withheld for simple drop later
+lastile -i %f_in%\*.laz ^
+    -tile_size 500 ^
+    -buffer 10 ^
+    -flag_as_withheld ^
+    -odir %f_out%\01_tile ^
+    -olaz ^
+    -cores %cores%
+
+:: Optimize las
+lasoptimize -i %f_out%\01_tile\*.laz ^
+    -odir %f_out%\02_optimized ^
+    -cores %cores%
+
+::Generate boundary shapefile
+REM lasboundary -i %f_out%\02_optimized\*.laz -drop_withheld -merged -o %f_out%\boundary.shp
+
+::Denoise
+lasnoise -i %f_out%\02_optimized\*.laz ^
+    -step 2 ^
+    -isolated 3 ^
+    -odix _denoised ^
+    -olaz ^
+    -cores %cores% 
+    
+::Classify ground
+lasground -i %f_out%\02_optimized\*_denoised.laz ^
+    -odir %f_out%\03_class ^
+    -olaz ^
+    -cores %cores%  
+
+::Normalize height
+lasheight -i %f_out%\03_class\*_denoised.laz ^
+    -replace_z ^
+    -odir %f_out%\04_norm ^
+    -olaz ^
+    -cores %cores%
+
+:: make DTM
+blast2dem -i %f_out%\03_class\*_denoised.laz ^
+    -keep_class 2 ^
+    -step 1 ^
+    -use_tile_bb ^
+    -odix _dtm ^
+    -obil ^
+    -odir %f_out%\05_raster\dtm ^
+    -kill 200 ^
+    -cores %cores%
+
+::merge DTM .bil files
+lasgrid -i %f_out%\05_raster\dtm\*.bil -merged ^
+    -step 1 ^
+    -false ^
+    -o %f_out%\05_raster\DTM_%loc%.png  
+
+:: make DSM
+blast2dem -i %f_out%\03_class\*_denoised.laz ^
+    -step 1 ^
+    -kill 200 ^
+    -use_tile_bb ^
+    -odix _dsm  ^
+    -obil ^
+    -odir %f_out%\05_raster\dsm ^
+    -cores %cores%
+
+::merge DSM .bil files
+lasgrid -i %f_out%\05_raster\dsm\*.bil -merged ^
+    -step 1 ^
+    -false ^
+    -o %f_out%\05_raster\DSM_%loc%.png
+
+:: make CHM
+lasgrid -i %f_out%\04_norm\*.laz ^
+    -max ^
+    -first_only ^
+    -step 1 ^
+    -odir %f_out%\05_raster\chm ^
+    -odix _chm ^
+    -obil ^
+    -cores %cores%
+
+lasgrid -i %f_out%\05_raster\chm\*.bil -merged ^
+    -step 1 ^
+    -false ^
+    -o %f_out%\05_raster\CHM_%loc%.png
+
+:: Compute density image
+lasgrid -i %f_out%\04_norm\*.laz ^
+    -step 1 ^
+    -point_density_16bit ^
+    -odir %f_out%\05_raster\den ^
+    -odix _den  -obil ^
+    -cores %cores%
+
+:: tif
+lasgrid -i %f_out%\05_raster\den\*.bil -merged ^
+    -step 1 ^
+    -o %f_out%\05_raster\density_allreturns_.tif
+
+:: png      
+lasgrid -i %f_out%\05_raster\den\*.bil -merged ^
+    -step 1 ^
+    -false -set_min_max 0 5 ^
+    -o %f_out%\05_raster\density_allreturns_0_5_%loc%.png
+    
+:: Compute structural metrics
+lascanopy -i %f_out%\04_norm\*.laz ^
+    -merged ^
+    -p 10 25 50 75 99 ^
+    -step 20 ^
+    -o %f_out%\05_raster\struc.tif</code></pre>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

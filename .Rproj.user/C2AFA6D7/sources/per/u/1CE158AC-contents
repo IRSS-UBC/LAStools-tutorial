@@ -1,0 +1,15 @@
+library(lidR)
+library(tidyverse)
+
+ls <- readLAS("G:\\_2020_Quebec\\!paper\\figures\\transects\\ALS\\R.laz")
+
+plot(ls, bg="#DCEFE1")
+
+
+csv <- read.csv("D:\\Lab_misc\\NIcholas\\frameworks\\single_const.csv")
+
+
+csv %>% ggplot(aes(Single,Spatial))+
+  geom_point() + theme_bw()
+csv %>% ggplot(aes(Constellation,Spatial))+
+  geom_point() + theme_bw()
